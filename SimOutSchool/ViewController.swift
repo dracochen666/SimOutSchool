@@ -34,6 +34,10 @@ class ViewController: UIViewController {
     private lazy var header = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
     private var sections = [Section]()
 
+    var sectionOneHeight = 150.0
+    var sectionTwoHeight = 500.0
+    var sectionThreeHeight = 150.0
+
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -44,9 +48,9 @@ class ViewController: UIViewController {
         tableView.separatorStyle = .singleLine
         view.addSubview(tableView)
         sections = [
-            Section(title: "1", rows: ["1","2","3"]),
-            Section(title: "2", rows: ["1","2","3"]),
-            Section(title: "3", rows: ["1","2","3"]),
+            Section(title: "基本信息", rows: ["1","2","3"]),
+            Section(title: "申请信息", rows: ["1","2","3"]),
+            Section(title: "审核信息", rows: ["1","2","3"]),
         ]
         
     }
@@ -92,13 +96,23 @@ extension ViewController: UITableViewDelegate {
     }
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         if section == 0 {
-            let view = BasicInfoView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 200))
+            let view = BasicInfoView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 0))
+            return view
+        }else if section == 1 {
+            let view = ApplicationInfoView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 0))
             return view
         }
         return UIView()
     }
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return 150
+        if section == 0 {
+            return sectionOneHeight
+        }else if section == 1 {
+            return sectionTwoHeight
+        }else {
+            return sectionThreeHeight
+        }
+        
     }
     func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
         return "Section\(section)"

@@ -20,27 +20,27 @@ class BasicInfoView: UIView {
        
         let nameLabel = UILabel(frame: CGRect(x: 0, y: 0, width: rect.width, height: 0))
         nameLabel.text = name
-        nameLabel.textColor = .systemGray3
+        nameLabel.textColor = .systemGray2
         nameLabel.font = .systemFont(ofSize: 15)
         
         let genderLabel = UILabel(frame: CGRect(x: 0, y: 0, width: rect.width, height: 0))
         genderLabel.text = gender
-        genderLabel.textColor = .systemGray3
+        genderLabel.textColor = .systemGray2
         genderLabel.font = .systemFont(ofSize: 15)
 
         let idLabel = UILabel(frame: CGRect(x: 0, y: 0, width: rect.width, height: 0))
         idLabel.text = id
-        idLabel.textColor = .systemGray3
+        idLabel.textColor = .systemGray2
         idLabel.font = .systemFont(ofSize: 15)
         
         let classLabel = UILabel(frame: CGRect(x: 0, y: 0, width: rect.width, height: 0))
         classLabel.text = schoolClass
-        classLabel.textColor = .systemGray3
+        classLabel.textColor = .systemGray2
         classLabel.font = .systemFont(ofSize: 15)
 
         let teacherLabel = UILabel(frame: CGRect(x: 0, y: 0, width: rect.width, height: 0))
         teacherLabel.text = teacher
-        teacherLabel.textColor = .systemGray3
+        teacherLabel.textColor = .systemGray2
         teacherLabel.font = .systemFont(ofSize: 15)
 
 //        let academyLabel = UILabel(frame: CGRect(x: 0, y: 0, width: rect.width, height: 0))
@@ -58,6 +58,7 @@ class BasicInfoView: UIView {
         stackview.frame = CGRect(x: 0, y: 0, width: rect.width, height: rect.height)
         stackview.axis = .vertical
         stackview.distribution = .equalSpacing
+        print(stackview.frame.height)
         self.addSubview(stackview)
     }
     
