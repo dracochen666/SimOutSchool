@@ -35,26 +35,29 @@ class ViewController: UIViewController {
     private lazy var titleStackview = UIStackView(frame: CGRect(x: 0, y: 40, width: self.view.frame.width, height: 80))
     private lazy var header = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
     private var sections = [Section]()
-
+    private lazy var  bottomBar = BottomBar()
     var sectionOneHeight:CGFloat = 140.0
     var sectionTwoHeight:CGFloat = 1600.0
     var sectionThreeHeight:CGFloat = 500.0
-
+    var constraints = [NSLayoutConstraint]()
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         print("develop test")
-        self.view.backgroundColor = .white
+        self.view.backgroundColor = .systemGray3
         tableView.tableHeaderView = createHeader()
         tableView.tableFooterView = BasicInfoView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 0))
         tableView.separatorStyle = .singleLine
+        
+        bottomBar.frame = CGRect(x: 0, y: 0, width: 0, height: 0)
         view.addSubview(tableView)
+        self.view.addSubview(bottomBar)
+        activeConstraint()
         sections = [
             Section(title: "基本信息"),
             Section(title: "申请信息"),
             Section(title: "审核信息"),
         ]
-        
     }
     func createHeader() -> UIStackView{
         titleLabel.text = "陈龙-2022年秋季学期返校申请                            "
@@ -68,7 +71,19 @@ class ViewController: UIViewController {
         titleStackview.backgroundColor = .systemGray6
         return titleStackview
     }
-
+    func activeConstraint() {
+//        constraints.append(tableView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 0))
+//        constraints.append(tableView.leftAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leftAnchor, constant: 0))
+//        constraints.append(bottomBar.topAnchor.constraint(equalTo: tableView.bottomAnchor, constant: 0))
+//        constraints.append(bottomBar.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 0))
+        
+        constraints.append(bottomBar.widthAnchor.constraint(equalToConstant: self.view.frame.width))
+        constraints.append(bottomBar.heightAnchor.constraint(equalToConstant: 50))
+        constraints.append(bottomBar.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 0))
+        constraints.append(bottomBar.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: 0))
+        constraints.append(bottomBar.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: 38))
+        NSLayoutConstraint.activate(constraints)
+    }
 }
 
 extension ViewController: UITableViewDelegate {
