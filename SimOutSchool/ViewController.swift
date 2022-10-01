@@ -109,20 +109,14 @@ extension ViewController: UITableViewDelegate {
         if section == 0 {
             tableView.footerView(forSection: section)
             let view = BasicInfoView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 0))
+            view.backgroundColor = .white
             return view
         }else if section == 1 {
             let view = ApplicationInfoView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 0))
             return view
         }else{
             let view = CheckInfoView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 0))
-//            var constraint = [NSLayoutConstraint]()
-//            constraint.append(view.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor))
-//            NSLayoutConstraint.activate(constraint)
             return view
-
-        }else {
-            let footer = tableView.dequeueReusableHeaderFooterView(withIdentifier: "TableFooter")
-            return footer
         }
     }
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {

@@ -18,7 +18,6 @@ class BasicInfoView: UIView {
     // Only override draw() if you perform custom drawing.
     // An empty implementation adversely affects performance during animation.
     override func draw(_ rect: CGRect) {
-       
         let nameLabel = UILabel(frame: CGRect(x: 0, y: 0, width: rect.width, height: 0))
         nameLabel.text = name
         nameLabel.textColor = .systemGray2
@@ -59,20 +58,20 @@ class BasicInfoView: UIView {
         stackview.frame = CGRect(x: 0, y: 0, width: rect.width, height: rect.height)
         stackview.axis = .vertical
         stackview.distribution = .equalSpacing
+        stackview.spacing = 10.0
         stackview.backgroundColor = .white
+        stackview.translatesAutoresizingMaskIntoConstraints = false
         print(stackview.frame.height)
         self.addSubview(stackview)
         
-        constraint.append(nameLabel.topAnchor.constraint(equalTo: stackview.topAnchor,constant: 10.0))
-        constraint.append(nameLabel.leadingAnchor.constraint(equalTo: stackview.leadingAnchor,constant: 10.0))
-        constraint.append(teacherLabel.leadingAnchor.constraint(equalTo: stackview.trailingAnchor,constant: 10.0))
-//        constraint.append(teacherLabel.leadingAnchor.constraint(equalTo: stackview.bottomAnchor,constant: 10.0))
-
-//        constraint.append(stackview.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20.0))
-//        constraint.append(stackview.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: 20.0))
-//        constraint.append(stackview.bottomAnchor.constraint(equalTo: self.bottomAnchor))
-
+//        constraint.append(nameLabel.topAnchor.constraint(equalTo: stackview.topAnchor,constant: 10.0))
+//        constraint.append(nameLabel.leadingAnchor.constraint(equalTo: stackview.leadingAnchor,constant: 10.0))
+//        constraint.append(teacherLabel.leadingAnchor.constraint(equalTo: stackview.trailingAnchor,constant: 10.0))
+        constraint.append(stackview.topAnchor.constraint(equalTo: self.topAnchor, constant: 10.0))
+        constraint.append(stackview.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 10.0))
+        constraint.append(stackview.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: 10.0))
+        constraint.append(stackview.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: 10.0))
         NSLayoutConstraint.activate(constraint)
     }
-
+    
 }

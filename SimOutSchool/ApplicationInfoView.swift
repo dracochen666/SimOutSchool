@@ -105,8 +105,6 @@ class ApplicationInfoView: UIView {
         
         constraint.append(infoStackview.topAnchor.constraint(equalTo: stackview.topAnchor,constant: 10.0))
         constraint.append(infoStackview.leadingAnchor.constraint(equalTo: stackview.leadingAnchor,constant: 10.0))
-//        constraint.append(attachStackView.topAnchor.constraint(equalTo: infoStackview.topAnchor,constant: 10.0))
-//        constraint.append(attachStackView.leadingAnchor.constraint(equalTo: stackview.trailingAnchor,constant: 10.0))
 
         NSLayoutConstraint.activate(constraint)
 
