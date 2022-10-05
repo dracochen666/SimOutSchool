@@ -60,7 +60,7 @@ class WriteInfoViewController: UIViewController {
         clearBtn.setTitle("清空", for: .normal)
         clearBtn.setTitleColor(.white, for: .normal)
         clearBtn.backgroundColor = .systemRed
-        
+        clearBtn.addTarget(self, action: #selector(clearBtnOnClick), for: .touchUpInside)
         
         totalStackView = UIStackView(arrangedSubviews: [nameTextField, idTextField, leaveDateTextField, arriveDateTextField, reasonTextView, submitBtn, clearBtn])
         totalStackView.axis = .vertical
@@ -153,5 +153,16 @@ extension WriteInfoViewController {
         passParameter()
         vc.person = self.person
         navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    //点击”清除“按钮
+    @objc private func clearBtnOnClick() {
+        nameTextField.text = ""
+        idTextField.text = ""
+        leaveDateTextField.text = ""
+        arriveDateTextField.text = ""
+        reasonTextView.text = ""
+        //为了使清空后的TextView能够显示出模拟placeholder的内容，相当于刷新
+        textViewDidEndEditing(reasonTextView)
     }
 }
