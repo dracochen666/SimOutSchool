@@ -70,6 +70,10 @@ class WriteInfoViewController: UIViewController {
 //        totalStackView.backgroundColor = .red
         view.addSubview(totalStackView)
         activeConstraints()
+        
+        //设置导航栏样式
+        self.navigationController?.navigationBar.backgroundColor = .systemGray6
+        self.navigationItem.title = "填写信息"
     }
     
     func activeConstraints() {
@@ -107,15 +111,13 @@ class WriteInfoViewController: UIViewController {
     }
     
     // MARK: - Navigation
-
+    /*
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-        let vc = ViewController()
-        
+        // Pass the selected object to the new view controller.        
     }
-    
+    */
 }
 
 extension WriteInfoViewController: UITextFieldDelegate{
@@ -126,20 +128,30 @@ extension WriteInfoViewController: UITextFieldDelegate{
 }
 
 extension WriteInfoViewController: UITextViewDelegate {
+    
+    //当点击输入框开始编辑时
     func textViewDidBeginEditing(_ textView: UITextView) {
         textView.textColor = .black
         textView.text = ""
     }
+    
+    //当离开输入框结束编辑时
     func textViewDidEndEditing(_ textView: UITextView) {
         if textView.text == "" {
             textView.textColor = .systemGray3
             textView.text = "请输入离校原因"
         }
     }
+    
 }
 
+//点击事件
 extension WriteInfoViewController {
+    //点击”提交“按钮
     @objc private func submitBtnOnClick() {
-        
+        let vc = ViewController()
+        passParameter()
+        vc.person = self.person
+        navigationController?.pushViewController(vc, animated: true)
     }
 }

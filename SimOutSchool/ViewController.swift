@@ -20,6 +20,7 @@ class Section {
 
 class ViewController: UIViewController {
     
+    var person = Person(name: "", id: "", leaveDate: "", arriveDate: "", reason: "", attachImageCode: "")
     private lazy var tableView:UITableView = {
         let tableView = UITableView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height), style: .grouped)
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "infoCell")
@@ -30,16 +31,19 @@ class ViewController: UIViewController {
         tableView.sectionHeaderHeight = 0
         return tableView
     }()
+    
     private lazy var avatarImage = UIImageView(frame: CGRect(x: 0, y: 0, width: 20, height: 0))
     private lazy var titleLabel = UILabel()
     private lazy var titleStackview = UIStackView(frame: CGRect(x: 0, y: 40, width: self.view.frame.width, height: 80))
     private lazy var header = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
     private var sections = [Section]()
     private lazy var  bottomBar = BottomBar()
+    
     var sectionOneHeight:CGFloat = 140.0
     var sectionTwoHeight:CGFloat = 1600.0
     var sectionThreeHeight:CGFloat = 500.0
     var constraints = [NSLayoutConstraint]()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -58,7 +62,36 @@ class ViewController: UIViewController {
             Section(title: "申请信息"),
             Section(title: "审核信息"),
         ]
+        
+        print("                                 sssssssssssssssss   ")
+        print(person.reason)
+        
+        //设置导航栏样式
+        setNavigationControllerStyle()
     }
+    
+    func setNavigationControllerStyle () {
+        navigationItem.title = "出入校申请"
+        
+        //左按钮
+        let backBtnImage: UIImage = {
+            let image = UIImage(systemName: "chevron.backward")
+            return image!
+        }()
+        let backBtn = UIBarButtonItem(image: backBtnImage, style: .plain, target: self, action: #selector(tapToBack))
+        backBtn.tintColor = .black
+        navigationItem.leftBarButtonItem = backBtn
+        
+        //右按钮
+        let moreBtnImage: UIImage = {
+            let image = UIImage(systemName: "ellipsis")
+            return image!
+        }()
+        let moreBtn = UIBarButtonItem(image: moreBtnImage, style: .plain, target: self, action: #selector(tapToMore))
+        moreBtn.tintColor = .black
+        navigationItem.rightBarButtonItem = moreBtn
+    }
+    
     func createHeader() -> UIStackView{
         titleLabel.text = "陈龙-2022年秋季学期返校申请                            "
         avatarImage.image = UIImage(systemName: "person.fill")
@@ -71,6 +104,7 @@ class ViewController: UIViewController {
         titleStackview.backgroundColor = .systemGray6
         return titleStackview
     }
+    
     func activeConstraint() {
 //        constraints.append(tableView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 0))
 //        constraints.append(tableView.leftAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leftAnchor, constant: 0))
@@ -161,3 +195,14 @@ extension ViewController: UITableViewDataSource {
 
 }
 
+//点击事件
+extension ViewController {
+    //导航栏 返回按钮
+    @objc private func tapToBack() {
+        navigationController?.popViewController(animated: true)
+    }
+    //导航栏 详细信息按钮
+    @objc private func tapToMore() {
+        print("More")
+    }
+}
