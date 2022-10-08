@@ -10,13 +10,13 @@ import UIKit
 class ApplicationInfoView: UIView {
     var isVaccination: String = "是否已接种新冠疫苗：三针"
     var applicationType: String = "申请类别：出校不出京（当天不返回）"
-    var leaveDate: String  = "离校日期：2022-09-19"
+    var leaveDate: String  = "离校日期："
     var address: String = "离校后住址：地球-中国"
     var riskLevel: String = "风险级别：低风险"
-    var specificDate: String = "出校具体时间：12点"
+    var specificDate: String = "出校具体时间："
     var reason: String = """
     出校是由：其他原因
-    其他原因说明：原因：看望家人 本人出入校时将坚持“两点一线”，不做与申请事由无关事项。科学佩戴口罩，加强防护，保持安全社交距 离，不扎堆、不聚集，不前往人员密集性娱乐场所。出校时间为9.19，预计返校时间9.25，行程轨迹为：北京信息科技大学-北京市丰台区
+    其他原因说明：原因：回家取物
     """
     var constraint = [NSLayoutConstraint]()
     // Only override draw() if you perform custom drawing.

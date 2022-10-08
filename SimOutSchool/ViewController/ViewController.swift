@@ -20,11 +20,11 @@ class Section {
 
 class ViewController: UIViewController {
     
-    var person = Person(name: "", id: "", leaveDate: "", arriveDate: "", reason: "", attachImageCode: "")
+    var person = Person(name: "", id: "", leaveDate: "", arriveDate: "", reason: "", attachImageCode: "", schoolClass: "")
     private lazy var tableView:UITableView = {
         let tableView = UITableView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height), style: .grouped)
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "infoCell")
-        tableView.register(TableFooter.self, forHeaderFooterViewReuseIdentifier: "TableFooter")
+//        tableView.register(TableFooter.self, forHeaderFooterViewReuseIdentifier: "TableFooter")
         tableView.dataSource = self
         tableView.delegate = self
         tableView.frame = view.bounds
@@ -93,7 +93,7 @@ class ViewController: UIViewController {
     }
     
     func createHeader() -> UIStackView{
-        titleLabel.text = "陈龙-2022年秋季学期返校申请                            "
+        titleLabel.text = "\(person.name)-2022年秋季学期返校申请                            "
         avatarImage.image = UIImage(systemName: "person.fill")
         avatarImage.tintColor = .systemGray
         avatarImage.contentMode = .scaleAspectFill
@@ -159,6 +159,9 @@ extension ViewController: UITableViewDelegate {
             tableView.footerView(forSection: section)
             let view = BasicInfoView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 0))
             view.backgroundColor = .white
+            view.name.append(person.name)
+            view.id.append(person.id)
+            view.schoolClass.append(person.schoolClass)
             return view
         }else if section == 1 {
             let view = ApplicationInfoView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 0))

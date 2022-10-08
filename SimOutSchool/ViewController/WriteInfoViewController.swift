@@ -9,10 +9,11 @@ import UIKit
 
 class WriteInfoViewController: UIViewController {
 
-    private lazy var person = Person(name: "", id: "", leaveDate: "", arriveDate: "", reason: "", attachImageCode: "")
+    private lazy var person = Person(name: "", id: "", leaveDate: "", arriveDate: "", reason: "", attachImageCode: "", schoolClass: "")
     
     private lazy var nameTextField = UITextField()
     private lazy var idTextField = UITextField()
+    private lazy var schoolClassTextField = UITextField()
     private lazy var leaveDateTextField = UITextField()
     private lazy var arriveDateTextField = UITextField()
     private lazy var reasonTextView = UITextView()
@@ -34,13 +35,17 @@ class WriteInfoViewController: UIViewController {
         idTextField.delegate = self
         idTextField.placeholder = "请输入学号"
 
+        schoolClassTextField.borderStyle = .roundedRect
+        schoolClassTextField.delegate = self
+        schoolClassTextField.placeholder = "请输入班级，例：软工 1901"
+        
         leaveDateTextField.borderStyle = .roundedRect
         leaveDateTextField.delegate = self
-        leaveDateTextField.placeholder = "请输入离校时间"
+        leaveDateTextField.placeholder = "请输入离校时间，例：2022-12-1"
 
         arriveDateTextField.borderStyle = .roundedRect
         arriveDateTextField.delegate = self
-        arriveDateTextField.placeholder = "请输入到校时间"
+        arriveDateTextField.placeholder = "请输入到校时间，例：12点"
 
         reasonTextView.frame = CGRect(x: 0, y: 0, width: 0, height: 50)
         reasonTextView.delegate = self
@@ -98,6 +103,7 @@ class WriteInfoViewController: UIViewController {
     func passParameter() {
         person.name = nameTextField.text!
         person.id = idTextField.text!
+        person.schoolClass = schoolClassTextField.text!
         person.leaveDate = leaveDateTextField.text!
         person.arriveDate = arriveDateTextField.text!
         person.reason = reasonTextView.text!

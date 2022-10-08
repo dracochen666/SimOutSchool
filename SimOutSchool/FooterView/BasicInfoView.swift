@@ -9,10 +9,10 @@ import UIKit
 
 class BasicInfoView: UIView {
     
-    var name: String = "姓名：陈龙"
+    var name: String = "姓名："
     var gender: String = "性别：男"
-    var id: String = "学号：2019011248"
-    var schoolClass: String = "班级：软工1901"
+    var id: String = "学号："
+    var schoolClass: String = "班级："
     var teacher: String = "辅导员：李媛"
     var constraint = [NSLayoutConstraint]()
     // Only override draw() if you perform custom drawing.
