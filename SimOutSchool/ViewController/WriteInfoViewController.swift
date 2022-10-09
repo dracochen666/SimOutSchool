@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import Photos
+import PhotosUI
 
 class WriteInfoViewController: UIViewController {
 
@@ -18,11 +20,13 @@ class WriteInfoViewController: UIViewController {
     private lazy var arriveDateTextField = UITextField()
     private lazy var reasonTextView = UITextView()
     private lazy var attachImage = UIImageView()
-    private var totalStackView: UIStackView!
     
+    private lazy var attachSelectBtn = UIButton(type: .roundedRect)
     private lazy var submitBtn = UIButton(type: .roundedRect)
     private lazy var clearBtn = UIButton(type: .roundedRect)
     
+    private var totalStackView: UIStackView!
+
     var constraints = [NSLayoutConstraint]()
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -57,6 +61,15 @@ class WriteInfoViewController: UIViewController {
         reasonTextView.font = .systemFont(ofSize: 17)
         reasonTextView.text = "请输入离校原因"
 
+        attachImage.image = UIImage(systemName: "photo.on.rectangle")
+        attachImage.translatesAutoresizingMaskIntoConstraints = false
+        attachImage.contentMode = .scaleAspectFit
+        
+        attachSelectBtn.setTitle("选择附件", for: .normal)
+        attachSelectBtn.setTitleColor(.systemGray, for: .normal)
+        attachSelectBtn.backgroundColor = .lightGray
+        attachSelectBtn.addTarget(self, action: #selector(selectImageBtnOnClick), for: .touchUpInside)
+        
         submitBtn.setTitle("提交", for: .normal)
         submitBtn.setTitleColor(.white, for: .normal)
         submitBtn.backgroundColor = .systemBlue
@@ -67,10 +80,10 @@ class WriteInfoViewController: UIViewController {
         clearBtn.backgroundColor = .systemRed
         clearBtn.addTarget(self, action: #selector(clearBtnOnClick), for: .touchUpInside)
         
-        totalStackView = UIStackView(arrangedSubviews: [nameTextField, idTextField, leaveDateTextField, arriveDateTextField, reasonTextView, submitBtn, clearBtn])
+        totalStackView = UIStackView(arrangedSubviews: [nameTextField, idTextField, leaveDateTextField, arriveDateTextField, reasonTextView, attachImage, attachSelectBtn, submitBtn, clearBtn])
         totalStackView.axis = .vertical
-        totalStackView.distribution = .equalSpacing
-        totalStackView.spacing = 30
+        totalStackView.distribution = .fill
+        totalStackView.spacing = 20
         totalStackView.translatesAutoresizingMaskIntoConstraints = false
 //        totalStackView.backgroundColor = .red
         view.addSubview(totalStackView)
@@ -83,21 +96,28 @@ class WriteInfoViewController: UIViewController {
     
     func activeConstraints() {
         //整体StackVIew的约束
-        constraints.append(totalStackView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor,constant: 100))
+        constraints.append(totalStackView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor,constant: 80))
         constraints.append(totalStackView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor,constant: 80))
         constraints.append(totalStackView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor,constant: -80))
+        constraints.append(totalStackView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor,constant: -50))
         
         //内部按钮约束
-
-        constraints.append(submitBtn.topAnchor.constraint(equalTo: reasonTextView.bottomAnchor,constant: 30))
-        constraints.append(submitBtn.trailingAnchor.constraint(equalTo: totalStackView.trailingAnchor,constant: -30))
-        constraints.append(submitBtn.leadingAnchor.constraint(equalTo: totalStackView.leadingAnchor,constant: 30))
-//        constraints.append(submitBtn.bottomAnchor.constraint(equalTo: clearBtn.topAnchor,constant: -30))
+        constraints.append(attachSelectBtn.topAnchor.constraint(equalTo: attachImage.bottomAnchor, constant: 30))
+        constraints.append(attachSelectBtn.leadingAnchor.constraint(equalTo: totalStackView.leadingAnchor, constant: 30))
+        constraints.append(attachSelectBtn.trailingAnchor.constraint(equalTo: totalStackView.trailingAnchor, constant: -30))
         
-        constraints.append(clearBtn.leadingAnchor.constraint(equalTo: totalStackView.leadingAnchor,constant: 30))
-        constraints.append(clearBtn.trailingAnchor.constraint(equalTo: totalStackView.trailingAnchor,constant: -30))
-//        constraints.append(clearBtn.bottomAnchor.constraint(equalTo: totalStackView.bottomAnchor,constant: -30))
-        constraints.append(totalStackView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor,constant: -100))
+        constraints.append(submitBtn.trailingAnchor.constraint(equalTo: totalStackView.trailingAnchor, constant: -30))
+        constraints.append(submitBtn.leadingAnchor.constraint(equalTo: totalStackView.leadingAnchor, constant: 30))
+        
+        constraints.append(clearBtn.leadingAnchor.constraint(equalTo: totalStackView.leadingAnchor, constant: 30))
+        constraints.append(clearBtn.trailingAnchor.constraint(equalTo: totalStackView.trailingAnchor, constant: -30))
+        
+
+        //附件约束
+        constraints.append(attachImage.heightAnchor.constraint(equalToConstant: 130))
+//        constraints.append(attachImage.topAnchor.constraint(equalTo: reasonTextView.bottomAnchor, constant: 10))
+//        constraints.append(attachImage.bottomAnchor.constraint(equalTo: attachSelectBtn.topAnchor, constant: 0))
+
         NSLayoutConstraint.activate(constraints)
     }
     func passParameter() {
@@ -153,12 +173,24 @@ extension WriteInfoViewController: UITextViewDelegate {
 
 //点击事件
 extension WriteInfoViewController {
+    
+    //点击”选择附件“按钮
+    @objc private func selectImageBtnOnClick() {
+        var config = PHPickerConfiguration(photoLibrary: .shared()) //创建一个配置实例
+        config.selectionLimit = 1 //配置选择内容的数量
+        config.filter = .images //配置选择内容的类型
+        let photoPickerVC = PHPickerViewController(configuration: config)
+        photoPickerVC.delegate = self
+        present(photoPickerVC, animated: true)
+    }
+    
     //点击”提交“按钮
     @objc private func submitBtnOnClick() {
         let vc = ViewController()
         passParameter()
         vc.person = self.person
         navigationController?.pushViewController(vc, animated: true)
+        
     }
     
     //点击”清除“按钮
@@ -168,7 +200,31 @@ extension WriteInfoViewController {
         leaveDateTextField.text = ""
         arriveDateTextField.text = ""
         reasonTextView.text = ""
+        attachImage.image = UIImage(systemName: "photo.on.rectangle")
         //为了使清空后的TextView能够显示出模拟placeholder的内容，相当于刷新
         textViewDidEndEditing(reasonTextView)
     }
+    
 }
+
+extension WriteInfoViewController: PHPickerViewControllerDelegate {
+    func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
+        dismiss(animated: true)
+        results.forEach{ result in
+            result.itemProvider.loadObject(ofClass: UIImage.self) { reading, error in
+                guard let image = reading as? UIImage, error == nil else{
+                    return
+                }
+                let imageCode: String = (image.pngData()?.base64EncodedString())!
+                self.person.attachImageCode = imageCode
+//                print(imageCode)
+            }
+        }
+        let imageData = Data(base64Encoded: person.attachImageCode)
+        if let data = imageData {
+            attachImage.image = UIImage(data: data)
+        }
+        
+    }
+}
+

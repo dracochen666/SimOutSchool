@@ -63,9 +63,6 @@ class ViewController: UIViewController {
             Section(title: "审核信息"),
         ]
         
-        print("                                 sssssssssssssssss   ")
-        print(person.reason)
-        
         //设置导航栏样式
         setNavigationControllerStyle()
     }
