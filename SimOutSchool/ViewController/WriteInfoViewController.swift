@@ -80,7 +80,7 @@ class WriteInfoViewController: UIViewController {
         clearBtn.backgroundColor = .systemRed
         clearBtn.addTarget(self, action: #selector(clearBtnOnClick), for: .touchUpInside)
         
-        totalStackView = UIStackView(arrangedSubviews: [nameTextField, idTextField, leaveDateTextField, arriveDateTextField, reasonTextView, attachImage, attachSelectBtn, submitBtn, clearBtn])
+        totalStackView = UIStackView(arrangedSubviews: [idTextField, nameTextField, schoolClassTextField, leaveDateTextField, arriveDateTextField, reasonTextView, attachImage, attachSelectBtn, submitBtn, clearBtn])
         totalStackView.axis = .vertical
         totalStackView.distribution = .fill
         totalStackView.spacing = 20
@@ -103,8 +103,8 @@ class WriteInfoViewController: UIViewController {
         
         //内部按钮约束
         constraints.append(attachSelectBtn.topAnchor.constraint(equalTo: attachImage.bottomAnchor, constant: 30))
-        constraints.append(attachSelectBtn.leadingAnchor.constraint(equalTo: totalStackView.leadingAnchor, constant: 30))
-        constraints.append(attachSelectBtn.trailingAnchor.constraint(equalTo: totalStackView.trailingAnchor, constant: -30))
+        constraints.append(attachSelectBtn.leadingAnchor.constraint(equalTo: totalStackView.leadingAnchor, constant: 80))
+        constraints.append(attachSelectBtn.trailingAnchor.constraint(equalTo: totalStackView.trailingAnchor, constant: -80))
         
         constraints.append(submitBtn.trailingAnchor.constraint(equalTo: totalStackView.trailingAnchor, constant: -30))
         constraints.append(submitBtn.leadingAnchor.constraint(equalTo: totalStackView.leadingAnchor, constant: 30))
@@ -127,7 +127,6 @@ class WriteInfoViewController: UIViewController {
         person.leaveDate = leaveDateTextField.text!
         person.arriveDate = arriveDateTextField.text!
         person.reason = reasonTextView.text!
-        person.attachImageCode = "000"
         
     }
     

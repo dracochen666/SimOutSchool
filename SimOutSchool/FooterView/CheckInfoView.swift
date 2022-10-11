@@ -9,28 +9,41 @@ import UIKit
 
 class CheckInfoView: UIView {
 
-    
+    private lazy var stackView = UIStackView()
+    private lazy var checkInfoView = UIImageView()
+
+    var constraint = [NSLayoutConstraint]()
     // Only override draw() if you perform custom drawing.
     // An empty implementation adversely affects performance during animation.
     override func draw(_ rect: CGRect) {
-        let checkInfoView = UIImageView(image: UIImage(named: "checkInfo"))
-//        checkInfoView.contentMode = .
-        print("width:\(rect.width) height:\(rect.height)")
+        checkInfoView = UIImageView(image: UIImage(named: "checkInfo"))
+        checkInfoView.contentMode = .scaleAspectFill
+        checkInfoView.translatesAutoresizingMaskIntoConstraints = false
         
-        let stackview = UIStackView(arrangedSubviews: [checkInfoView])
-        stackview.backgroundColor = .red
-        stackview.frame = CGRect(x: 0, y: 0, width: rect.width, height: 200.0)
-//        stackview.translatesAutoresizingMaskIntoConstraints = false
-//        checkInfoView.topAnchor.constraint(equalTo: stackview.topAnchor, constant: 10.0).isActive = true
-//        checkInfoView.leadingAnchor.constraint(equalTo: stackview.leadingAnchor, constant: 10.0).isActive = true
-        checkInfoView.trailingAnchor.constraint(equalTo: stackview.trailingAnchor, constant: 10.0).isActive = true
-        checkInfoView.bottomAnchor.constraint(equalTo: stackview.bottomAnchor, constant: 10.0).isActive = true
-//        checkInfoView.topAnchor.constraint(equalTo: stackview.topAnchor, constant: 10.0).isActive = true
-//        checkInfoView.leadingAnchor.constraint(equalTo: stackview.leadingAnchor, constant: 10.0).isActive = true
+        stackView = UIStackView(arrangedSubviews: [checkInfoView])
+        stackView.backgroundColor = .red
+        stackView.frame = CGRect(x: 0, y: 0, width: rect.width, height: rect.height)
+        stackView.translatesAutoresizingMaskIntoConstraints = false
         
-        self.addSubview(stackview)
+        self.addSubview(stackView)
+        activeConstraints()
     }
     
+    private func activeConstraints() {
+        
+        constraint.append(stackView.topAnchor.constraint(equalTo: self.topAnchor, constant: 0))
+        constraint.append(stackView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 0))
+        constraint.append(stackView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: 0))
+        constraint.append(stackView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -70))
+        
+        constraint.append(checkInfoView.topAnchor.constraint(equalTo: stackView.topAnchor, constant: 0))
+        constraint.append(checkInfoView.leadingAnchor.constraint(equalTo: stackView.leadingAnchor, constant: 0))
+        constraint.append(checkInfoView.trailingAnchor.constraint(equalTo: stackView.trailingAnchor, constant: 0))
+        constraint.append(checkInfoView.bottomAnchor.constraint(equalTo: stackView.bottomAnchor, constant: -40))
+        
+        NSLayoutConstraint.activate(constraint)
+
+    }
 
     
 }

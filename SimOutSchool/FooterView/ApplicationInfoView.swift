@@ -8,6 +8,7 @@
 import UIKit
 
 class ApplicationInfoView: UIView {
+    
     var isVaccination: String = "是否已接种新冠疫苗：三针"
     var applicationType: String = "申请类别：出校不出京（当天不返回）"
     var leaveDate: String  = "离校日期："
@@ -18,112 +19,117 @@ class ApplicationInfoView: UIView {
     出校是由：其他原因
     其他原因说明：原因：回家取物
     """
+    var imageCode = ""
     var constraint = [NSLayoutConstraint]()
+    
+    private lazy var isVaccinationLabel = UILabel()
+    private lazy var typeLabel = UILabel()
+    private lazy var leaveDateLabel = UILabel()
+    private lazy var addressLabel = UILabel()
+    private lazy var riskLabel = UILabel()
+    private lazy var specificDateLabel = UILabel()
+    private lazy var reasonLabel = UILabel()
+    private lazy var infoStackview = UIStackView()
+
+    private lazy var attachlabel = UILabel()
+    private lazy var attachImageView = UIImageView()
+    private lazy var attachStackView = UIStackView()
+
+    private lazy var totalStackView = UIStackView()
+
+
     // Only override draw() if you perform custom drawing.
     // An empty implementation adversely affects performance during animation.
     override func draw(_ rect: CGRect) {
         //基本申请信息
-        let isVaccinationLabel = UILabel(frame: CGRect(x: 0, y: 0, width: rect.width, height: 0))
+        isVaccinationLabel = UILabel(frame: CGRect(x: 0, y: 0, width: rect.width, height: 0))
         isVaccinationLabel.text = isVaccination
-        isVaccinationLabel.textColor = .systemGray2
-        isVaccinationLabel.font = .systemFont(ofSize: 15)
-
-        let typeLabel = UILabel(frame: CGRect(x: 0, y: 0, width: rect.width, height: 0))
+        isVaccinationLabel.textColor = .systemGray
+        isVaccinationLabel.font = .systemFont(ofSize: 14)
+        
+        typeLabel = UILabel(frame: CGRect(x: 0, y: 0, width: rect.width, height: 0))
         typeLabel.text = applicationType
-        typeLabel.textColor = .systemGray2
-        typeLabel.font = .systemFont(ofSize: 15)
+        typeLabel.textColor = .systemGray
+        typeLabel.font = .systemFont(ofSize: 14)
 
-        let leaveDateLabel = UILabel(frame: CGRect(x: 0, y: 0, width: rect.width, height: 0))
+        leaveDateLabel = UILabel(frame: CGRect(x: 0, y: 0, width: rect.width, height: 0))
         leaveDateLabel.text = leaveDate
-        leaveDateLabel.textColor = .systemGray2
-        leaveDateLabel.font = .systemFont(ofSize: 15)
+        leaveDateLabel.textColor = .systemGray
+        leaveDateLabel.font = .systemFont(ofSize: 14)
         
-        let addressLabel = UILabel(frame: CGRect(x: 0, y: 0, width: rect.width, height: 0))
+        addressLabel = UILabel(frame: CGRect(x: 0, y: 0, width: rect.width, height: 0))
         addressLabel.text = address
-        addressLabel.textColor = .systemGray2
-        addressLabel.font = .systemFont(ofSize: 15)
+        addressLabel.textColor = .systemGray
+        addressLabel.font = .systemFont(ofSize: 14)
         
-        let riskLabel = UILabel(frame: CGRect(x: 0, y: 0, width: rect.width, height: 0))
+        riskLabel = UILabel(frame: CGRect(x: 0, y: 0, width: rect.width, height: 0))
         riskLabel.text = riskLevel
-        riskLabel.textColor = .systemGray2
-        riskLabel.font = .systemFont(ofSize: 15)
+        riskLabel.textColor = .systemGray
+        riskLabel.font = .systemFont(ofSize: 14)
         
-        let specificDateLabel = UILabel(frame: CGRect(x: 0, y: 0, width: rect.width, height: 0))
+        specificDateLabel = UILabel(frame: CGRect(x: 0, y: 0, width: rect.width, height: 0))
         specificDateLabel.text = specificDate
-        specificDateLabel.textColor = .systemGray2
-        specificDateLabel.font = .systemFont(ofSize: 15)
+        specificDateLabel.textColor = .systemGray
+        specificDateLabel.font = .systemFont(ofSize: 14)
         
-//        let reasonTextView = UITextView(frame: CGRect(x: 0, y: 0, width: rect.width, height: 100))
-//        reasonTextView.text = reason
-//        reasonTextView.textColor = .systemGray
-//        reasonTextView.backgroundColor = .red
-//        reasonTextView.font = .systemFont(ofSize: 15)
-        
-        let reasonLabel = UILabel(frame: CGRect(x: 0, y: 0, width: rect.width, height: 100))
+        reasonLabel = UILabel(frame: CGRect(x: 0, y: 0, width: rect.width, height: 0))
         reasonLabel.text = reason
-        reasonLabel.textColor = .systemGray2
-        reasonLabel.font = .systemFont(ofSize: 15)
+        reasonLabel.textColor = .systemGray
+        reasonLabel.font = .systemFont(ofSize: 14)
         reasonLabel.numberOfLines = 6
         
-        let infoStackview = UIStackView(arrangedSubviews: [isVaccinationLabel,typeLabel,leaveDateLabel,addressLabel,riskLabel,specificDateLabel,reasonLabel])
+        infoStackview = UIStackView(arrangedSubviews: [isVaccinationLabel,typeLabel,leaveDateLabel,addressLabel,riskLabel,specificDateLabel,reasonLabel])
         infoStackview.frame = CGRect(x: 0, y: 0, width: rect.width, height: rect.height)
         infoStackview.axis = .vertical
-        infoStackview.distribution = .equalSpacing
-        infoStackview.spacing = 10.0
+        infoStackview.distribution = .fill
+        infoStackview.spacing = 5
+        infoStackview.backgroundColor = .red
+        infoStackview.translatesAutoresizingMaskIntoConstraints = false
         
         //相关附件部分
-        let attachlabel = UILabel(frame: CGRect(x: 0, y: 0, width: rect.width, height: 0))
-        attachlabel.text = "相关附件:"
-        attachlabel.textColor = .systemGray2
-        attachlabel.font = .systemFont(ofSize: 15)
-        let attachlabel2 = UILabel(frame: CGRect(x: 0, y: 0, width: rect.width, height: 0))
-        attachlabel2.text = "其他附件:"
-        attachlabel2.textColor = .systemGray2
-        attachlabel2.font = .systemFont(ofSize: 15)
-        let attachImageView1 = UIImageView(image: UIImage(named: "attach1"))
-        let attachImageView2 = UIImageView(image: UIImage(named: "attach2"))
-        let attachImageView3 = UIImageView(image: UIImage(named: "attach3"))
-        attachImageView1.contentMode = .scaleAspectFit
-        attachImageView2.contentMode = .scaleAspectFit
-        attachImageView3.contentMode = .scaleAspectFit
-        let attachStackView = UIStackView(arrangedSubviews: [
-            attachlabel, attachImageView1, attachImageView2, attachImageView3
-        ])
-        attachStackView.axis = .vertical
-        attachStackView.distribution = .equalSpacing
-//        constraint.append(attachlabel.leftAnchor.constraint(equalTo: attachStackView.leftAnchor, constant: 10.0))
+        attachlabel = UILabel(frame: CGRect(x: 0, y: 0, width: rect.width, height: 0))
+        attachlabel.text = "健康宝绿码截图（不超过500kb）："
+        attachlabel.textColor = .systemGray
+        attachlabel.font = .systemFont(ofSize: 14)
+        attachImageView = UIImageView(image: UIImage(data: Data(base64Encoded: imageCode)!))
+        attachImageView.contentMode = .scaleAspectFit
+//        attachStackView = UIStackView(arrangedSubviews: [
+//            attachlabel, attachImageView1
+//        ])
+//        attachStackView.axis = .vertical
+//        attachStackView.distribution = .fillEqually
+//        attachStackView.backgroundColor = .green
+//        attachStackView.translatesAutoresizingMaskIntoConstraints = false
         
-        //整体stackview
-        let stackview = UIStackView(arrangedSubviews: [infoStackview,attachStackView])
-        stackview.frame = CGRect(x: 0, y: 0, width: rect.width, height: rect.height)
-        stackview.axis = .vertical
-        stackview.distribution = .equalSpacing
-        stackview.spacing = 10
-        stackview.backgroundColor = .white
-        print(stackview.frame.height)
-        self.addSubview(stackview)
         
-        constraint.append(infoStackview.topAnchor.constraint(equalTo: stackview.topAnchor,constant: 10.0))
-        constraint.append(infoStackview.leadingAnchor.constraint(equalTo: stackview.leadingAnchor,constant: 10.0))
-
+        //整体totalStackView
+        totalStackView = UIStackView(arrangedSubviews: [isVaccinationLabel, typeLabel, leaveDateLabel, addressLabel, riskLabel, specificDateLabel, reasonLabel, attachlabel, attachImageView])
+        totalStackView.frame = CGRect(x: 0, y: 0, width: 0, height: 0)
+        totalStackView.axis = .vertical
+        totalStackView.distribution = .fill
+        totalStackView.spacing = 10
+        totalStackView.translatesAutoresizingMaskIntoConstraints = false
+        totalStackView.alignment = .leading
+        
+        print(totalStackView.frame.height)
+        self.addSubview(totalStackView)
+        self.backgroundColor = .white
+        activeConstraints()
+    }
+    
+    private func activeConstraints() {
+        
+        constraint.append(totalStackView.topAnchor.constraint(equalTo: self.topAnchor, constant: 10.0))
+        constraint.append(totalStackView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 10.0))
+        constraint.append(totalStackView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -10.0))
+        constraint.append(totalStackView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -10.0))
+        
+//        constraint.append(attachImageView.topAnchor.constraint(equalTo: attachlabel.topAnchor, constant: 0))
+        constraint.append(attachImageView.leadingAnchor.constraint(equalTo: totalStackView.leadingAnchor, constant: 0))
+        constraint.append(attachImageView.trailingAnchor.constraint(equalTo: totalStackView.trailingAnchor, constant: -280))
+        
         NSLayoutConstraint.activate(constraint)
 
     }
-//    init(isVaccination: String, applicationType: String, leaveDate: String, address: String,
-//         riskLevel: String, specificDate: String, reason: String, constraint: [NSLayoutConstraint] = [NSLayoutConstraint]()) {
-//        self.isVaccination = isVaccination
-//        self.applicationType = applicationType
-//        self.leaveDate = leaveDate
-//        self.address = address
-//        self.riskLevel = riskLevel
-//        self.specificDate = specificDate
-//        self.reason = reason
-//        self.constraint = constraint
-//    }
-    
-//    required init?(coder: NSCoder) {
-//        fatalError("init(coder:) has not been implemented")
-//    }
-    
 }
 
