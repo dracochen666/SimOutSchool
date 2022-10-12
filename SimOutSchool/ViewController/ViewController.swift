@@ -33,9 +33,7 @@ class ViewController: UIViewController {
         return tableView
     }()
     
-    private lazy var avatarImage = UIImageView(frame: CGRect(x: 0, y: 0, width: 20, height: 0))
-    private lazy var titleLabel = UILabel()
-    private lazy var titleStackview = UIStackView(frame: CGRect(x: 0, y: 40, width: self.view.frame.width, height: 80))
+  
     private lazy var header = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
     private var sections = [Section]()
     private lazy var  bottomBar = BottomBar()
@@ -51,9 +49,13 @@ class ViewController: UIViewController {
         // Do any additional setup after loading the view.
         print("develop test")
 //        self.view.backgroundColor = .black
-        tableView.tableHeaderView = createHeader()
-        tableView.tableFooterView = BasicInfoView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 0))
-        tableView.separatorStyle = .singleLine
+        tableView.tableHeaderView = {
+            let header = HeaderView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 70))
+            header.personName = person.name
+            header.backgroundColor = .systemGray6
+            return header
+        }()
+//        tableView.separatorStyle = .singleLine
         
         bottomBar.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 0)
         view.addSubview(tableView)
@@ -74,7 +76,7 @@ class ViewController: UIViewController {
         
         //左按钮
         let backBtnImage: UIImage = {
-            let image = UIImage(systemName: "chevron.backward")
+            let image = UIImage(systemName: "xmark")
             return image!
         }()
         let backBtn = UIBarButtonItem(image: backBtnImage, style: .plain, target: self, action: #selector(tapToBack))
@@ -89,21 +91,13 @@ class ViewController: UIViewController {
         let moreBtn = UIBarButtonItem(image: moreBtnImage, style: .plain, target: self, action: #selector(tapToMore))
         moreBtn.tintColor = .black
         navigationItem.rightBarButtonItem = moreBtn
+        navigationController?.navigationBar.backgroundColor = .systemGray5
     }
     
-    func createHeader() -> UIStackView{
-        titleLabel.text = "\(person.name)-2022年秋季学期返校申请"
-        avatarImage.image = UIImage(systemName: "person.fill")
-        avatarImage.tintColor = .systemGray2
-        avatarImage.contentMode = .scaleAspectFit
-        avatarImage.layer.cornerRadius = 50
-        avatarImage.clipsToBounds = true
-        avatarImage.translatesAutoresizingMaskIntoConstraints = false
-        titleStackview.addArrangedSubview(avatarImage)
-//        titleStackview.addArrangedSubview(titleLabel)
-        titleStackview.backgroundColor = .systemGray6
-        return titleStackview
-    }
+//    func createHeader() -> UIStackView{
+//
+//        return titleStackview
+//    }
     
     func activeConstraint() {
         
@@ -113,10 +107,10 @@ class ViewController: UIViewController {
         constraints.append(bottomBar.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: 0))
         constraints.append(bottomBar.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: 38))
         
-        constraints.append(avatarImage.topAnchor.constraint(equalTo: titleStackview.topAnchor, constant: 10))
-        constraints.append(avatarImage.leadingAnchor.constraint(equalTo: titleStackview.leadingAnchor, constant: 10))
-        constraints.append(avatarImage.trailingAnchor.constraint(equalTo: titleStackview.trailingAnchor, constant: 150))
-        constraints.append(avatarImage.bottomAnchor.constraint(equalTo: titleStackview.bottomAnchor, constant: -15))
+//        constraints.append(avatarImage.topAnchor.constraint(equalTo: titleStackview.topAnchor, constant: 10))
+//        constraints.append(avatarImage.leadingAnchor.constraint(equalTo: titleStackview.leadingAnchor, constant: 10))
+//        constraints.append(avatarImage.trailingAnchor.constraint(equalTo: titleStackview.trailingAnchor, constant: 150))
+//        constraints.append(avatarImage.bottomAnchor.constraint(equalTo: titleStackview.bottomAnchor, constant: -15))
         
 //        constraints.append(titleLabel.leadingAnchor.constraint(equalTo: avatarImage.trailingAnchor, constant: 10))
         NSLayoutConstraint.activate(constraints)
@@ -142,6 +136,9 @@ extension ViewController: UITableViewDelegate {
         let arrowImage = UIImage(systemName: "arrow.up")
         let cell = tableView.dequeueReusableCell(withIdentifier: "infoCell", for: indexPath)
         cell.textLabel?.text = sections[indexPath.section].title
+//        cell.layer.borderWidth = 10
+//        cell.layer.borderColor = .init(gray: 0.5, alpha: 0.5)
+//        cell.layer.cornerRadius = 80
 //        cell.backgroundColor = .red
   
         return cell
