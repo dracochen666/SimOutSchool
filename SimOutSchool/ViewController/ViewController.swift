@@ -69,6 +69,13 @@ class ViewController: UIViewController {
         
         //设置导航栏样式
         setNavigationControllerStyle()
+        
+        //设置右滑手势
+        let gesture = UISwipeGestureRecognizer(target: self, action: #selector(gestureSwipeLeft(_:)))
+        gesture.direction = .right
+        gesture.numberOfTouchesRequired = 1
+        self.view.addGestureRecognizer(gesture)
+        self.view.isUserInteractionEnabled = true
     }
     
     func setNavigationControllerStyle () {
@@ -188,6 +195,8 @@ extension ViewController: UITableViewDelegate {
         }
         
     }
+    
+    
 //    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
 //        let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: "TableFooter")
 //        return view
@@ -213,4 +222,12 @@ extension ViewController {
     @objc private func tapToMore() {
         print("More")
     }
+    
+    //右滑Pop
+    @objc func gestureSwipeLeft(_ gesture: UISwipeGestureRecognizer) {
+//        print("Gesture Fired!")
+        navigationController?.popViewController(animated: true)
+        
+    }
 }
+

@@ -29,7 +29,7 @@ class HeaderView: UIView {
         avatarImage.contentMode = .scaleAspectFit
         avatarImage.layer.cornerRadius = 50
         avatarImage.clipsToBounds = true
-//        avatarImage.backgroundColor = .red
+//        avatarImage.backgroundColor = .red                                             
 //        avatarImage.translatesAutoresizingMaskIntoConstraints = false
         
         titleStackview.frame = CGRect(x: 0, y: 0, width: frame.width, height: frame.height)
