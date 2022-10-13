@@ -21,6 +21,8 @@ class WriteInfoViewController: UIViewController {
     private lazy var reasonTextView = UITextView()
     private lazy var attachImage = UIImageView()
     
+    private lazy var readLocalDataBtn = UIButton(type: .roundedRect)
+    
     private lazy var attachSelectBtn = UIButton(type: .roundedRect)
     private lazy var submitBtn = UIButton(type: .roundedRect)
     private lazy var clearBtn = UIButton(type: .roundedRect)
@@ -31,6 +33,12 @@ class WriteInfoViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
+        let data = UserDefaults.standard.data(forKey: "Person")
+        do {
+            person = try JSONDecoder().decode(Person.self, from: data!)
+        } catch {
+            print("Decode Failed")
+        }
         nameTextField.borderStyle = .roundedRect
         nameTextField.delegate = self
         nameTextField.placeholder = "请输入姓名"
@@ -80,15 +88,19 @@ class WriteInfoViewController: UIViewController {
         clearBtn.backgroundColor = .systemRed
         clearBtn.addTarget(self, action: #selector(clearBtnOnClick), for: .touchUpInside)
         
-        totalStackView = UIStackView(arrangedSubviews: [idTextField, nameTextField, schoolClassTextField, leaveDateTextField, arriveDateTextField, reasonTextView, attachImage, attachSelectBtn, submitBtn, clearBtn])
+        totalStackView = UIStackView(arrangedSubviews: [readLocalDataBtn, idTextField, nameTextField, schoolClassTextField, leaveDateTextField, arriveDateTextField, reasonTextView, attachImage, attachSelectBtn, submitBtn, clearBtn])
         totalStackView.axis = .vertical
         totalStackView.distribution = .fill
         totalStackView.spacing = 20
         totalStackView.translatesAutoresizingMaskIntoConstraints = false
-//        totalStackView.backgroundColor = .red
-        view.addSubview(totalStackView)
-        activeConstraints()
         
+        readLocalDataBtn.setTitle("历史记录", for: .normal)
+        readLocalDataBtn.backgroundColor = .systemGray3
+        readLocalDataBtn.setTitleColor(.white, for: .normal)
+        readLocalDataBtn.addTarget(self, action: #selector(readLocalDataOnClick), for: .touchUpInside)
+        view.addSubview(totalStackView)
+//        view.addSubview(readLocalDataBtn)
+        activeConstraints()
         //设置导航栏样式
         self.navigationController?.navigationBar.backgroundColor = .systemGray6
         self.navigationItem.title = "填写信息"
@@ -129,7 +141,20 @@ class WriteInfoViewController: UIViewController {
         person.reason = reasonTextView.text!
         
     }
-    
+    func readLocalData() {
+        nameTextField.text = person.name
+        idTextField.text = person.id
+        schoolClassTextField.text = person.schoolClass
+        leaveDateTextField.text = person.leaveDate
+        arriveDateTextField.text = person.arriveDate
+        if person.reason != "请输入离校原因" {
+            reasonTextView.textColor = .black
+            reasonTextView.text = person.reason
+        }
+        let imageData = Data(base64Encoded: person.attachImageCode)
+        attachImage.image = UIImage(data: imageData!)
+        
+    }
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.resignFirstResponder()
         self.view.endEditing(false)
@@ -157,7 +182,9 @@ extension WriteInfoViewController: UITextViewDelegate {
     //当点击输入框开始编辑时
     func textViewDidBeginEditing(_ textView: UITextView) {
         textView.textColor = .black
-        textView.text = ""
+        if textView.text == "请输入离校原因" {
+            textView.text = ""
+        }
     }
     
     //当离开输入框结束编辑时
@@ -187,6 +214,12 @@ extension WriteInfoViewController {
     @objc private func submitBtnOnClick() {
         let vc = ViewController()
         passParameter()
+        do {
+            let data = try JSONEncoder().encode(person)
+            UserDefaults.standard.set(data, forKey: "Person")
+        } catch {
+            print("Encode Failed")
+        }
         vc.person = self.person
         navigationController?.pushViewController(vc, animated: true)
         
@@ -196,6 +229,7 @@ extension WriteInfoViewController {
     @objc private func clearBtnOnClick() {
         nameTextField.text = ""
         idTextField.text = ""
+        schoolClassTextField.text = ""
         leaveDateTextField.text = ""
         arriveDateTextField.text = ""
         reasonTextView.text = ""
@@ -204,6 +238,9 @@ extension WriteInfoViewController {
         textViewDidEndEditing(reasonTextView)
     }
     
+    @objc private func readLocalDataOnClick() {
+        readLocalData()
+    }
 }
 
 extension WriteInfoViewController: PHPickerViewControllerDelegate {

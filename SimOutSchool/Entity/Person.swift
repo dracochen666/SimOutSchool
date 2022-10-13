@@ -7,7 +7,7 @@
 
 import Foundation
 
-class Person {
+class Person: Codable {
     var name: String = ""
     var id: String = ""
     var schoolClass = ""
