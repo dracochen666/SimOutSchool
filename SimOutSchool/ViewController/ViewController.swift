@@ -140,19 +140,21 @@ extension ViewController: UITableViewDelegate {
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
-        let arrowImage = UIImage(systemName: "arrow.up")
+        let arrowImageView = {
+            let imageView = UIImageView(image: UIImage(systemName: "chevron.up"))
+            imageView.tintColor = .systemGray
+            return imageView
+        }()
         let cell = tableView.dequeueReusableCell(withIdentifier: "infoCell", for: indexPath)
         cell.textLabel?.text = sections[indexPath.section].title
-//        cell.layer.borderWidth = 10
-//        cell.layer.borderColor = .init(gray: 0.5, alpha: 0.5)
-//        cell.layer.cornerRadius = 80
-//        cell.backgroundColor = .red
+        cell.addSubview(arrowImageView)
+        cell.accessoryView = arrowImageView
   
         return cell
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         sections[indexPath.section].isExpanding.toggle()
-//        print(sections[indexPath.section].isExpanding)
+        
         if indexPath.section == 0 {
             sectionOneHeight =  sections[indexPath.section].isExpanding ? 130.0 : 0
         }else if indexPath.section == 1 {
@@ -161,7 +163,23 @@ extension ViewController: UITableViewDelegate {
             sectionThreeHeight = sections[indexPath.section].isExpanding ? 300.0 : 0
         }
         tableView.reloadSections([indexPath.section], with: .fade)
-        
+        //添加Section展开箭头及其动画
+        let isExpanding = sections[indexPath.section].isExpanding
+        if sections[indexPath.section].isExpanding {
+            tableView.cellForRow(at: indexPath)?.accessoryView = {
+                var imageView = UIImageView(image: UIImage(systemName: "chevron.up"))
+                imageView = arrowRotationAnimation(imageView: imageView, isExpanding: isExpanding)
+                imageView.tintColor = .systemGray
+                return imageView
+            }()
+        }else {
+            tableView.cellForRow(at: indexPath)?.accessoryView = {
+                var imageView = UIImageView(image: UIImage(systemName: "chevron.down"))
+                imageView = arrowRotationAnimation(imageView: imageView, isExpanding: isExpanding)
+                imageView.tintColor = .systemGray
+                return imageView
+            }()
+        }
     }
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         if section == 0 {
@@ -231,3 +249,33 @@ extension ViewController {
     }
 }
 
+extension ViewController {
+    func arrowRotationAnimation(imageView: UIImageView, isExpanding: Bool) -> UIImageView{
+        if isExpanding {
+            let rotationAnim = CABasicAnimation(keyPath: "transform.rotation")
+
+            rotationAnim.fromValue = Double.pi
+            rotationAnim.toValue = 0
+//            rotationAnim.repeatCount = 1
+            rotationAnim.duration = 0.5
+            rotationAnim.isRemovedOnCompletion = false
+
+            imageView.layer.add(rotationAnim, forKey: nil)
+            print("展开")
+            return imageView
+        }else {
+            let rotationAnim = CABasicAnimation(keyPath: "transform.rotation")
+
+            rotationAnim.fromValue = Double.pi
+            rotationAnim.toValue = 0
+//            rotationAnim.repeatCount = 1
+            rotationAnim.duration = 0.5
+            rotationAnim.isRemovedOnCompletion = false
+
+            imageView.layer.add(rotationAnim, forKey: nil)
+            print("未展开")
+            return imageView
+        }
+        
+    }
+}

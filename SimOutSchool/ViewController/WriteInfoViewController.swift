@@ -35,7 +35,9 @@ class WriteInfoViewController: UIViewController {
         view.backgroundColor = .white
         let data = UserDefaults.standard.data(forKey: "Person")
         do {
-            person = try JSONDecoder().decode(Person.self, from: data!)
+            if let data = data {
+                person = try JSONDecoder().decode(Person.self, from: data)
+            }
         } catch {
             print("Decode Failed")
         }
