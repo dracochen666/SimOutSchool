@@ -9,6 +9,16 @@ import UIKit
 import Photos
 import PhotosUI
 
+//结构体和类的区别： 结构体在栈、类在堆，
+//栈为什么比堆快
+//深拷贝、浅拷贝
+//swift 写时复制
+//看文章
+//intrinsicContentsize
+//单例
+//bounds和frame的区别
+//事件传递及响应链
+
 class WriteInfoViewController: UIViewController {
 
     private lazy var person = Person(name: "", id: "", leaveDate: "", arriveDate: "", reason: "", attachImageCode: "", schoolClass: "")
@@ -31,6 +41,7 @@ class WriteInfoViewController: UIViewController {
 
     var constraints = [NSLayoutConstraint]()
     override func viewDidLoad() {
+        
         super.viewDidLoad()
         view.backgroundColor = .white
         let data = UserDefaults.standard.data(forKey: "Person")
@@ -61,6 +72,7 @@ class WriteInfoViewController: UIViewController {
         arriveDateTextField.delegate = self
         arriveDateTextField.placeholder = "请输入到校时间，例：12点"
 
+        
         reasonTextView.frame = CGRect(x: 0, y: 0, width: 0, height: 50)
         reasonTextView.delegate = self
         reasonTextView.layer.borderColor = .init(gray: 0.5, alpha: 0.4)
@@ -74,6 +86,7 @@ class WriteInfoViewController: UIViewController {
         attachImage.image = UIImage(systemName: "photo.on.rectangle")
         attachImage.translatesAutoresizingMaskIntoConstraints = false
         attachImage.contentMode = .scaleAspectFit
+//        attachImage.backgroundColor = UIColor(red: 2, green: 2, blue: 3, alpha: 1)
         
         attachSelectBtn.setTitle("选择附件", for: .normal)
         attachSelectBtn.setTitleColor(.systemGray, for: .normal)
@@ -110,10 +123,10 @@ class WriteInfoViewController: UIViewController {
     
     func activeConstraints() {
         //整体StackVIew的约束
-        constraints.append(totalStackView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor,constant: 80))
+        constraints.append(totalStackView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor,constant: 50))
         constraints.append(totalStackView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor,constant: 80))
         constraints.append(totalStackView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor,constant: -80))
-        constraints.append(totalStackView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor,constant: -50))
+        constraints.append(totalStackView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor,constant: -40))
         
         //内部按钮约束
         constraints.append(attachSelectBtn.topAnchor.constraint(equalTo: attachImage.bottomAnchor, constant: 30))

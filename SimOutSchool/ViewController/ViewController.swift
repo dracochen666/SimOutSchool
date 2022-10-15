@@ -252,27 +252,35 @@ extension ViewController {
 extension ViewController {
     func arrowRotationAnimation(imageView: UIImageView, isExpanding: Bool) -> UIImageView{
         if isExpanding {
-            let rotationAnim = CABasicAnimation(keyPath: "transform.rotation")
+            UIView.animate(withDuration: 0.5) {
+                imageView.transform = CGAffineTransform(rotationAngle: Double.pi)
+            }
+            
+//            let rotationAnim = CABasicAnimation(keyPath: "transform.rotation")
 
-            rotationAnim.fromValue = Double.pi
-            rotationAnim.toValue = 0
-//            rotationAnim.repeatCount = 1
-            rotationAnim.duration = 0.5
-            rotationAnim.isRemovedOnCompletion = false
-
-            imageView.layer.add(rotationAnim, forKey: nil)
-            print("展开")
+//            rotationAnim.fromValue = Double.pi
+//            rotationAnim.toValue = 0
+////            rotationAnim.repeatCount = 1
+//            rotationAnim.duration = 0.5
+//            rotationAnim.isRemovedOnCompletion = false
+//
+//            imageView.layer.add(rotationAnim, forKey: nil)
+//            print("展开")
             return imageView
         }else {
-            let rotationAnim = CABasicAnimation(keyPath: "transform.rotation")
+            UIView.animate(withDuration: 0.5) {
+                imageView.transform = CGAffineTransform(rotationAngle: Double.pi)
+            }
+//            let rotationAnim = CABasicAnimation(keyPath: "transform.rotation")
 
-            rotationAnim.fromValue = Double.pi
-            rotationAnim.toValue = 0
-//            rotationAnim.repeatCount = 1
-            rotationAnim.duration = 0.5
-            rotationAnim.isRemovedOnCompletion = false
-
-            imageView.layer.add(rotationAnim, forKey: nil)
+//            rotationAnim.fromValue = Double.pi
+//            rotationAnim.toValue = 0
+////            rotationAnim.repeatCount = 1
+//            rotationAnim.duration = 0.5
+//            rotationAnim.isRemovedOnCompletion = false
+//
+//            imageView.layer.add(rotationAnim, forKey: nil)
+            
             print("未展开")
             return imageView
         }
