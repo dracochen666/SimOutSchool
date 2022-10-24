@@ -13,12 +13,10 @@ import PhotosUI
 //栈为什么比堆快
 //深拷贝、浅拷贝
 //swift 写时复制
-//看文章
 //intrinsicContentsize
 //单例
 //bounds和frame的区别
 //事件传递及响应链
-
 class WriteInfoViewController: UIViewController {
 
     private lazy var person = Person(name: "", id: "", leaveDate: "", arriveDate: "", reason: "", attachImageCode: "", schoolClass: "")
@@ -39,6 +37,7 @@ class WriteInfoViewController: UIViewController {
     
     private var totalStackView: UIStackView!
 
+    
     var constraints = [NSLayoutConstraint]()
     override func viewDidLoad() {
         
@@ -217,7 +216,7 @@ extension WriteInfoViewController {
     
     //点击”选择附件“按钮
     @objc private func selectImageBtnOnClick() {
-        var config = PHPickerConfiguration(photoLibrary: .shared()) //创建一个配置实例
+        var config = PHPickerConfiguration(photoLibrary: .shared())//创建一个配置实例
         config.selectionLimit = 1 //配置选择内容的数量
         config.filter = .images //配置选择内容的类型
         let photoPickerVC = PHPickerViewController(configuration: config)
@@ -261,20 +260,25 @@ extension WriteInfoViewController {
 extension WriteInfoViewController: PHPickerViewControllerDelegate {
     func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
         dismiss(animated: true)
-        results.forEach{ result in
-            result.itemProvider.loadObject(ofClass: UIImage.self) { reading, error in
-                guard let image = reading as? UIImage, error == nil else{
+        results.forEach { result in
+            result.itemProvider.loadObject(ofClass: UIImage.self) { [weak self] reading, error in//[weak self]避免循环引用
+                guard let image = reading as? UIImage,
+                      error == nil,
+                      let self = self else{
                     return
                 }
                 let imageCode: String = (image.pngData()?.base64EncodedString())!
                 self.person.attachImageCode = imageCode
-//                print(imageCode)
+                
+                let imageData = Data(base64Encoded: self.person.attachImageCode)
+                if let data = imageData {
+                    DispatchQueue.main.async {
+                        self.attachImage.image = UIImage(data: data)
+                    }
+                }
             }
         }
-        let imageData = Data(base64Encoded: person.attachImageCode)
-        if let data = imageData {
-            attachImage.image = UIImage(data: data)
-        }
+       //
         
     }
 }

@@ -10,7 +10,7 @@ import UIKit
 class Section {
     var title: String
     var rows: [String]
-    var isExpanding: Bool = false
+    var isExpanding: Bool = true
     
     init(title: String = "", rows: [String] = [], isExpanding: Bool = false) {
         self.title = title
@@ -23,7 +23,7 @@ class ViewController: UIViewController {
     var person = Person(name: "", id: "", leaveDate: "", arriveDate: "", reason: "", attachImageCode: "", schoolClass: "")
     private lazy var tableView:UITableView = {
         let tableView = UITableView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height), style: .grouped)
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "infoCell")
+        tableView.register(CustomTableViewCell.self, forCellReuseIdentifier: "infoCell")
 //        tableView.register(TableFooter.self, forHeaderFooterViewReuseIdentifier: "TableFooter")
         tableView.dataSource = self
         tableView.delegate = self
@@ -39,9 +39,11 @@ class ViewController: UIViewController {
     private lazy var  bottomBar = BottomBar()
     
     
-    var sectionOneHeight:CGFloat = 130.0
-    var sectionTwoHeight:CGFloat = 500.0
-    var sectionThreeHeight:CGFloat = 320.0
+//    var sectionOneHeight:CGFloat = 130.0
+//    var sectionTwoHeight:CGFloat = 500.0
+//    var sectionThreeHeight:CGFloat = 320.0
+    
+    
     var constraints = [NSLayoutConstraint]()
     
     override func viewDidLoad() {
@@ -127,12 +129,6 @@ class ViewController: UIViewController {
 
 extension ViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        let currentSection = sections[section]
-//        if currentSection.isExpanding {
-//            return currentSection.rows.count + 1
-//        }else {
-//            return 1
-//        }
         return 1
     }
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -140,46 +136,35 @@ extension ViewController: UITableViewDelegate {
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
-        let arrowImageView = {
-            let imageView = UIImageView(image: UIImage(systemName: "chevron.up"))
-            imageView.tintColor = .systemGray
-            return imageView
-        }()
-        let cell = tableView.dequeueReusableCell(withIdentifier: "infoCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "infoCell", for: indexPath) as! CustomTableViewCell
         cell.textLabel?.text = sections[indexPath.section].title
-        cell.addSubview(arrowImageView)
-        cell.accessoryView = arrowImageView
   
         return cell
     }
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         sections[indexPath.section].isExpanding.toggle()
         
-        if indexPath.section == 0 {
-            sectionOneHeight =  sections[indexPath.section].isExpanding ? 130.0 : 0
-        }else if indexPath.section == 1 {
-            sectionTwoHeight = sections[indexPath.section].isExpanding ? 500.0 : 0
-        }else {
-            sectionThreeHeight = sections[indexPath.section].isExpanding ? 300.0 : 0
-        }
-        tableView.reloadSections([indexPath.section], with: .fade)
         //添加Section展开箭头及其动画
         let isExpanding = sections[indexPath.section].isExpanding
-        if sections[indexPath.section].isExpanding {
-            tableView.cellForRow(at: indexPath)?.accessoryView = {
-                var imageView = UIImageView(image: UIImage(systemName: "chevron.up"))
-                imageView = arrowRotationAnimation(imageView: imageView, isExpanding: isExpanding)
-                imageView.tintColor = .systemGray
-                return imageView
-            }()
+        if isExpanding {
+            tableView.cellForRow(at: indexPath)?.accessoryView?.transform = CGAffineTransform(rotationAngle: -Double.pi)
+//            = {
+////                var imageView = UIImageView(image: UIImage(systemName: "chevron.down"))
+//                imageView = arrowRotationAnimation(imageView: imageView, isExpanding: isExpanding)
+//                imageView.tintColor = .systemGray
+//                return imageView
+//            }()
         }else {
-            tableView.cellForRow(at: indexPath)?.accessoryView = {
-                var imageView = UIImageView(image: UIImage(systemName: "chevron.down"))
-                imageView = arrowRotationAnimation(imageView: imageView, isExpanding: isExpanding)
-                imageView.tintColor = .systemGray
-                return imageView
-            }()
+            tableView.cellForRow(at: indexPath)?.accessoryView?.transform = CGAffineTransform(rotationAngle: Double.pi)
+//            = {
+////                var imageView = UIImageView(image: UIImage(systemName: "chevron.down"))
+//                imageView = arrowRotationAnimation(imageView: imageView, isExpanding: isExpanding)
+//                imageView.tintColor = .systemGray
+//                return imageView
+//            }()
         }
+        tableView.reloadSections([indexPath.section], with: .fade)
     }
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         if section == 0 {
@@ -198,20 +183,22 @@ extension ViewController: UITableViewDelegate {
             view.backgroundColor = .white
             return view
         }else{
-            let view = CheckInfoView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: sectionThreeHeight))
+            let view = CheckInfoView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 0))
             view.backgroundColor = .systemGray6
             return view
         }
     }
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+
+        var footerHeight: CGFloat = 0
         if section == 0 {
-            return sectionOneHeight
-        }else if section == 1 {
-            return sectionTwoHeight
-        }else{
-            return sectionThreeHeight
+            footerHeight =  sections[section].isExpanding ? 130.0 : 0
+        } else if section == 1 {
+            footerHeight = sections[section].isExpanding ? 500.0 : 0
+        } else {
+            footerHeight = sections[section].isExpanding ? 320.0 : 0
         }
-        
+        return footerHeight
     }
     
     
@@ -256,16 +243,6 @@ extension ViewController {
                 imageView.transform = CGAffineTransform(rotationAngle: Double.pi)
             }
             
-//            let rotationAnim = CABasicAnimation(keyPath: "transform.rotation")
-
-//            rotationAnim.fromValue = Double.pi
-//            rotationAnim.toValue = 0
-////            rotationAnim.repeatCount = 1
-//            rotationAnim.duration = 0.5
-//            rotationAnim.isRemovedOnCompletion = false
-//
-//            imageView.layer.add(rotationAnim, forKey: nil)
-//            print("展开")
             return imageView
         }else {
             UIView.animate(withDuration: 0.5) {

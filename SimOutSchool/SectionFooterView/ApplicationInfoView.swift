@@ -91,8 +91,9 @@ class ApplicationInfoView: UIView {
         attachlabel.text = "健康宝绿码截图（不超过500kb）："
         attachlabel.textColor = .systemGray
         attachlabel.font = .systemFont(ofSize: 14)
-        attachImageView = UIImageView(image: UIImage(data: Data(base64Encoded: imageCode)!))
-        attachImageView.contentMode = .scaleAspectFit
+        attachImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 120, height: 200))
+        attachImageView.image = UIImage(data: Data(base64Encoded: imageCode)!)
+        attachImageView.contentMode = .scaleAspectFill
 //        attachStackView = UIStackView(arrangedSubviews: [
 //            attachlabel, attachImageView1
 //        ])
@@ -104,6 +105,7 @@ class ApplicationInfoView: UIView {
         
         //整体totalStackView
         totalStackView = UIStackView(arrangedSubviews: [isVaccinationLabel, typeLabel, leaveDateLabel, addressLabel, riskLabel, specificDateLabel, reasonLabel, attachlabel, attachImageView])
+//        totalStackView.addSubview()
         totalStackView.frame = CGRect(x: 0, y: 0, width: 0, height: 0)
         totalStackView.axis = .vertical
         totalStackView.distribution = .fill
@@ -124,10 +126,12 @@ class ApplicationInfoView: UIView {
         constraint.append(totalStackView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -10.0))
         constraint.append(totalStackView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -10.0))
         
-//        constraint.append(attachImageView.topAnchor.constraint(equalTo: attachlabel.topAnchor, constant: 0))
-        constraint.append(attachImageView.leadingAnchor.constraint(equalTo: totalStackView.leadingAnchor, constant: 0))
+//        constraint.append(attachImageView.widthAnchor.constraint(equalToConstant: 120))
+//        constraint.append(attachImageView.heightAnchor.constraint(equalToConstant: 200))
+
+        constraint.append(attachImageView.leadingAnchor.constraint(equalTo: totalStackView.leadingAnchor, constant: 10))
         constraint.append(attachImageView.trailingAnchor.constraint(equalTo: totalStackView.trailingAnchor, constant: -280))
-        
+
         NSLayoutConstraint.activate(constraint)
 
     }
